@@ -1,0 +1,44 @@
+<!--
+ - Created by bswif on 3/7/2022.
+ -->
+
+<!-- Flow Record Form -->
+<template>
+    <div if:false={formsLoaded}>
+        <lightning-spinner style="position: fixed;" alternative-text="Loading..."></lightning-spinner>
+        <div style="position: fixed;" class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+    <lightning-layout multiple-rows>
+        <lightning-layout-item size="12">
+            <template for:each={_recList} for:item="rec">
+                <!--<lightning-record-edit-form object-api-name={objName} key={rec.theIndex} data-index={rec.theIndex} record-id={rec.Id}> removed record id reference to decrease load time -->
+                <lightning-record-edit-form object-api-name={objName} key={rec.theIndex} data-index={rec.theIndex} onload={handleFormLoad}>
+                    <lightning-layout multiple-rows>
+                        <template for:each={rec.flds} for:item="fld">
+                            <lightning-layout-item size={fld.fldSize} key={fld.apiName} padding="around-small" >
+                                <!--<lightning-input-field value={fld.value} field-name={fld.apiName} key={fld.apiName} onchange={handleFieldUpdate} name={fld.apiName} data-index={rec.theIndex} required={fld.isRequired}></lightning-input-field>-->
+                                <lightning-input-field variant="label-stacked" value={fld.value} field-name={fld.apiName} key={fld.apiName} onchange={handleFieldUpdate} name={fld.apiName} data-index={rec.theIndex} ></lightning-input-field>
+                            </lightning-layout-item>
+                        </template>
+                    </lightning-layout>
+                </lightning-record-edit-form>
+            </template>
+        </lightning-layout-item>
+        <lightning-layout-item size="6" padding="around-small">
+            <lightning-button
+                    class="slds-float_right"
+                    variant="brand"
+                    onclick={handleAdd}
+                    label="Add">
+            </lightning-button>
+        </lightning-layout-item>
+        <lightning-layout-item size="6" padding="around-small">
+            <lightning-button
+                    class="slds-float_left"
+                    variant="brand"
+                    label="Next"
+                    onclick={handleNext}>
+            </lightning-button>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

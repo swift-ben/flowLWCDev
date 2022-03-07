@@ -1,0 +1,146 @@
+<!--
+ - Created by bswif on 3/7/2022.
+ -->
+
+<!-- Flow Record Form Cpe -->
+<template>
+    <div if:true={isLoading}>
+        <lightning-spinner style="position: fixed;" alternative-text="Loading..."></lightning-spinner>
+        <div style="position: fixed;" class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+
+    <lightning-layout multiple-rows>
+        <lightning-layout-item
+                size="12"
+                padding="around-small"
+        >
+            <lightning-combobox
+                    name="inputType"
+                    label="Object Name"
+                    value={objName}
+                    placeholder="Select object..."
+                    options={objOpts}
+                    onchange={handleObjChange}>
+            </lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item
+                size="12"
+                padding="around-small">
+            <lightning-combobox
+                    value={recList}
+                    if:true={showOpts}
+                    options={recListOpts}
+                    onchange={handleRecListChange}
+                    required
+                    label="Record Collection">
+            </lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item
+                size="12"
+                padding="around-small"
+        >
+            <lightning-button
+                    if:true={showAddFldsButton}
+                    label="Add/Edit Fields"
+                    variant="brand"
+                    onclick={toggleAddFld}
+            ></lightning-button>
+        </lightning-layout-item>
+    </lightning-layout>
+
+    <div class="slds-modal slds-modal_large slds-fade-in-open slds-backdrop" if:true={showAddFlds}>
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={toggleAddFld}>
+                    <lightning-icon variant="inverse" icon-name="utility:close" alternative-text="Close" title="Close"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Add Fields</h2>
+            </header>
+            <!-- consider splitting this into its own LWC-->
+            <div class="slds-modal__content" style="background-color:white;">
+                <lightning-layout multiple-rows>
+                    <lightning-layout-item size="3" padding="around-small">
+                        Field
+                    </lightning-layout-item>
+                    <lightning-layout-item size="3" padding="around-small">
+                        Label
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                        Required
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                        Input Size
+                    </lightning-layout-item>
+                    <template for:each={_flds} for:item="fld">
+                        <lightning-layout-item size="3" key={fld.apiName} padding="around-small">
+                            <lightning-combobox
+                                    label="API Name"
+                                    variant="label-hidden"
+                                    options={fldOpts}
+                                    value={fld.apiName}
+                                    key={fld.apiName}
+                                    data-index={fld.theIndex}
+                                    name="apiName"
+                                    onchange={handleFldChange}
+                            ></lightning-combobox>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="3" key={fld.apiName} padding="around-small">
+                            <lightning-input
+                                    label="Label"
+                                    variant="label-hidden"
+                                    value={fld.theLabel}
+                                    key={fld.apiName}
+                                    type="text"
+                                    name="theLabel"
+                                    data-index={fld.theIndex}
+                                    onchange={handleFldChange}
+                            ></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="2" key={fld.apiName} padding="around-small">
+                            <lightning-input
+                                    label="Required"
+                                    variant="label-hidden"
+                                    checked={fld.isRequired}
+                                    type="checkbox"
+                                    key={fld.apiName}
+                                    name="isRequired"
+                                    data-index={fld.theIndex}
+                                    onchange={handleFldChange}
+                            ></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="2" key={fld.apiName} padding="around-small">
+                            <lightning-combobox
+                                    name="fldSize"
+                                    label="Field Size"
+                                    value={fld.fldSize}
+                                    variant="label-hidden"
+                                    placeholder="Select field size..."
+                                    options={fldSizeOpts}
+                                    onchange={handleFldChange}
+                                    key={fld.apiName}
+                                    data-index={fld.theIndex}>
+                            </lightning-combobox>
+                        </lightning-layout-item>
+                    </template>
+                    <lightning-layout-item size="6" padding="around-small">
+                        <lightning-button
+                                class="slds-float_right"
+                                label="Add"
+                                onclick={handleAddFld}
+                                variant="brand"
+                        ></lightning-button>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="6" padding="around-small">
+                        <lightning-button
+                                class="slds-float_left"
+                                label="Submit Fields"
+                                variant="brand"
+                                onclick={handleSubmitFlds}
+                        ></lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </div>
+    </div>
+</template>

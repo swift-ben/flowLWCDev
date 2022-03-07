@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>54.0</apiVersion>
+    <description>Utilizes lightning-record-edit-form and lightning-layout to provide a list of edit/create forms for a
+        specified SObject and Fields, with the ability to add more.
+    </description>
+    <isExposed>true</isExposed>
+    <masterLabel>Flow Record Form</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen"
+                      configurationEditor="c-flow-record-form-c-p-e">
+            <propertyType name="theObj" extends="SObject" label="The Object" description="Generic sObject data type used for input sObject properties" />
+            <property label="The Records" name="recList" type="{theObj[]}" />
+            <property name="jsonFlds" type="String" />
+            <property name="objName" type="String" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
