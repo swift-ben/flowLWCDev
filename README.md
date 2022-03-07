@@ -1,8 +1,8 @@
 # flowLWCDev
 This repository contains miscellaneous Lightning Web Components for Flow
 
-<h2>Flow Record Form (Beta)</h2>
-<p>A LWC leveraging <lightning-record-edit-form> and <lightning-layout> to expose record edit/create forms to visual flow. Admins can define what fields to display and users have the ability to add additional rows to create new records.</p>
+<h2>Flow Record Form (beta)</h2>
+<p>A LWC leveraging lightning-record-edit-form and lightning-layout to expose record edit/create forms to visual flow. Admins can define what fields to display and users have the ability to add additional rows to create new records.</p>
 <h3>Configuration Instructions</h3>
 <ol>
   <li><a href="https://login.salesforce.com/packaging/installPackage.apexp?p0=04t8c000000ybi9" target="_blank">Install the unmanaged package</a></li>
@@ -41,9 +41,10 @@ This repository contains miscellaneous Lightning Web Components for Flow
   <li>Custom labels and requiring fields</li>
   <li>Remove fields and records</li>
   <li>Option to disable button to add more records</li>
+  <li>lots more...</li>
 </ul>
 <h3>Caveats</h3>
 <ul>
   <li>Using <lightning-record-edit-form> means that this component is subject to the Permissions and Sharing Settings</li>
-  <li>This is currently in beta testing</li>
+  <li>This is currently in beta testing and shouldn't be used in Production</li>
 </ul>
