@@ -45,6 +45,6 @@ This repository contains miscellaneous Lightning Web Components for Flow
 </ul>
 <h3>Caveats</h3>
 <ul>
-  <li>Using <lightning-record-edit-form> means that this component is subject to the Permissions and Sharing Settings</li>
+  <li>Using lightning-record-edit-form means that this component is subject to the Permissions and Sharing Settings</li>
   <li>This is currently in beta testing and shouldn't be used in Production</li>
 </ul>
