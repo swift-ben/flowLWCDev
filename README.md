@@ -41,7 +41,6 @@ This repository contains miscellaneous Lightning Web Components for Flow
   <li>Custom labels and requiring fields</li>
   <li>Remove fields and records</li>
   <li>Option to disable button to add more records</li>
-  <li>
 </ul>
 <h3>Caveats</h3>
 <ul>
