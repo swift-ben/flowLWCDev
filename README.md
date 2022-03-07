@@ -5,7 +5,7 @@ This repository contains miscellaneous Lightning Web Components for Flow
 <p>A LWC leveraging lightning-record-edit-form and lightning-layout to expose record edit/create forms to visual flow. Admins can define what fields to display and users have the ability to add additional rows to create new records.</p>
 <h3>Configuration Instructions</h3>
 <ol>
-  <li><a href="https://login.salesforce.com/packaging/installPackage.apexp?p0=04t8c000000ybi9" target="_blank">Install the unmanaged package</a></li>
+  <li><a href="https://test.salesforce.com/packaging/installPackage.apexp?p0=04t8c000000ybi9" target="_blank">Install the unmanaged package (Sandbox only for now)</a></li>
   <li>Review the components in the provided Sample Flow</li>
   <li>To configure the LWC
     <ol>
