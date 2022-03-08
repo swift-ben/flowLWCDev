@@ -130,11 +130,15 @@ export default class FlowRecordFormCpe extends LightningElement {
     connectedCallback(){
         if(this.jsonFlds){
             this.flds = JSON.parse(this.jsonFlds);
+            for(let i = 0; i < this.flds.length; i++){
+                this.flds[i].showRemove = i != 0;
+            }
         }else if(!(this.flds)){
             this.flds=[
                 {
                     apiName:'',
-                    theIndex:0
+                    theIndex:0,
+                    showRemove:false
                 }
             ]
         }
@@ -183,7 +187,8 @@ export default class FlowRecordFormCpe extends LightningElement {
             //set flds array
             this.flds = [
                 {
-                    theIndex: 0
+                    theIndex: 0,
+                    showRemove: false
                 }
             ];
             this.fldsErrMsg = null;
@@ -231,9 +236,22 @@ export default class FlowRecordFormCpe extends LightningElement {
         this._flds.push(
             {
                 apiName: '',
-                theIndex: this._flds.length
+                theIndex: this._flds.length,
+                showRemove: this._flds.length != 0
             }
         );
+    }
+
+    //handle removing a field from the flds array
+    handleRemoveFld(event){
+        if(event && event.detail){
+            const theIndex = event.target.dataset.index;
+            this._flds.splice(theIndex,1);
+            for(let i = 0; i < this._flds.length; i++){
+                this._flds[i].theIndex = i;
+                this._flds[i].theIndex = i != 0;
+            }
+        }
     }
 
     //handle a field being added or updated, set to json and send to parent lwc

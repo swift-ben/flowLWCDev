@@ -44,7 +44,8 @@ export default class FlowRecordForm extends LightningElement {
             for(let theRec of this.recList){
                 let cloneRec = Object.assign({},theRec);
                 cloneRec.theIndex = theCounter; //index used for editing/removing
-                cloneRec.showRemove = !(theRec.Id); //boolean to show remove button
+                cloneRec.showRemove = !(theRec.Id) && theCounter != 0; //boolean to show remove button for instantiated records only
+                cloneRec.removeId = theCounter.toString()+'Remove';//id for remove icon
                 cloneRec.formLoaded = false; //boolean to set true when form is loaded
                 cloneRec.flds = []; //array of fields and values (values set to avoid using id in form to save load)
                 for(let theFldObj of this.fldObjs){ //set fields, values and id for labels
@@ -61,6 +62,7 @@ export default class FlowRecordForm extends LightningElement {
                 let newRec = {
                         theIndex: 0,
                         showRemove: false,
+                        removeId: '0Remove',
                         formLoaded: false
                 };
                 newRec.flds = [];
@@ -71,9 +73,6 @@ export default class FlowRecordForm extends LightningElement {
                 }
                 this._recList.push(newRec);
             }
-        }
-        for(let theRec of this._recList){
-            console.log(theRec);
         }
     }
 
@@ -87,14 +86,18 @@ export default class FlowRecordForm extends LightningElement {
     handleFieldUpdate(event){
         let theIndex = event.target.dataset.index;
         this._recList[theIndex][event.target.name] = event.target.value;
+        //set the value on the corresponding item inf the flds array as well to maintain value on form
+        for(let theFldObj of this._recList[theIndex].flds){
+            theFldObj.value = this._recList[theIndex][theFldObj.apiName];
+        }
     }
 
     //add new record to _recList and set attributes
     handleAdd(event){
-        let theIndex = event.target.dataset.index;
         let newRec={
             theIndex: this._recList.length,
-            showRemove: false,
+            showRemove: this._recList.length != 0,
+            removeId: this._recList.length.toString()+'Remove',
             formLoaded: false
         };
         newRec.flds = [];
@@ -104,6 +107,20 @@ export default class FlowRecordForm extends LightningElement {
             newRec.flds.push(theFldObj);
         }
         this._recList.push(newRec);
+    }
+
+    //handle removing record
+    handleRemove(event){
+        let theIndex = event.target.dataset.index;
+        this._recList.splice(theIndex,1);
+        for(let i = 0; i < this._recList.length; i++){
+            this._recList[i].theIndex = i;
+            this._recList[i].showRemove = !(this._recList[i].Id) && i != 0;
+            this._recList[i].removeId = i.toString()+'Remove';
+            for(let theFldObj of this._recList[i].flds){
+                theFldObj.theId = i.toString()+theFldObj.apiName;
+            }
+        }
     }
 
     //validate fields, assign _recList to recList and fire flow next

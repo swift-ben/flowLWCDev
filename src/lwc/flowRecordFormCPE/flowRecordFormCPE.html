@@ -4,11 +4,13 @@
 
 <!-- Flow Record Form Cpe -->
 <template>
+    <!-- spinner on load and submit -->
     <div if:true={showSpinner}>
         <lightning-spinner style="position: fixed;" alternative-text="Loading..."></lightning-spinner>
         <div style="position: fixed;" class="slds-backdrop slds-backdrop_open"></div>
-    </div>
+    </div> 
 
+    <!-- main config -->
     <lightning-layout multiple-rows>
         <lightning-layout-item
                 size="12"
@@ -40,6 +42,7 @@
                 size="12"
                 padding="around-small"
         >
+            <!-- button to open add/edit fields modal -->
             <lightning-button
                     if:true={showAddFldsButton}
                     label="Add/Edit Fields"
@@ -51,6 +54,7 @@
         </lightning-layout-item>
     </lightning-layout>
 
+    <!-- add/edit fields modal-->
     <div class="slds-modal slds-modal_large slds-fade-in-open slds-backdrop" if:true={showAddFlds}>
         <div class="slds-modal__container">
             <header class="slds-modal__header">
@@ -60,6 +64,7 @@
                 </button>
                 <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Add Fields</h2>
             </header>
+
             <!-- consider splitting this into its own LWC-->
             <div class="slds-modal__content" style="background-color:white;">
                 <lightning-layout multiple-rows>
@@ -78,6 +83,11 @@
                     <lightning-layout-item size="2" padding="around-small">
                         Input Size
                     </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                        Remove
+                    </lightning-layout-item>
+
+                    <!-- field list -->
                     <template for:each={_flds} for:item="fld">
                         <lightning-layout-item size="3" key={fld.apiName} padding="around-small">
                             <lightning-combobox
@@ -131,7 +141,19 @@
                                     data-index={fld.theIndex}>
                             </lightning-combobox>
                         </lightning-layout-item>
+                        <lightning-layout-item size="2" key={fld.apiName} padding="around-small" if:true={fld.showRemove}>
+                            <lightning-icon
+                                    data-index={fld.theIndex}
+                                    onclick={handleRemoveFld}
+                                    variant="error"
+                                    icon-name="utility:delete"
+                                    alternative-text="Remove"
+                                    size="small" >
+                            </lightning-icon>
+                        </lightning-layout-item>
                     </template>
+
+                    <!-- add and submit fields buttons -->
                     <lightning-layout-item size="6" padding="around-small">
                         <lightning-button
                                 class="slds-float_right"

@@ -1,6 +1,9 @@
 /**
  * Created by bswif on 3/7/2022.
  */
+lightning-icon:hover{
+    cursor: pointer;
+}
 
  .errSpan{
      font-weight: bold;
