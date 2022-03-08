@@ -10,10 +10,11 @@
 */
 
 import { LightningElement, api, track, wire } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getObjects from '@salesforce/apex/FlowRecordFormHelper.getObjects';
 
 export default class FlowRecordFormCpe extends LightningElement {
-    @track isLoading = true; //boolean to show spinner
+    @track isLoading = true; //show spinner while loading
     objFldMap; //map of sobjects to their fields
     @track objOpts; //list of sobjects
     @track fldOpts; //list of sobject fields
@@ -21,6 +22,9 @@ export default class FlowRecordFormCpe extends LightningElement {
     @track flds; //submitted fields from the add/edit fields modal
     @track _flds; //temp flds array to hold edits before submitting
     @track fldSizeOpts = [] //list of input sizes
+    @track fldsErrMsg; //error to show on fields modal
+    @track noFldsErrMsg; //error on submit if they didn't add fields
+    @track isSubmitting = false; //show spinner on button submits;
 
     @api builderContext; //flow builder context with variables, collections, etc...
 
@@ -42,6 +46,11 @@ export default class FlowRecordFormCpe extends LightningElement {
     }
     set automaticOutputVariables(value) {
         this._automaticOutputVariables = value;
+    }
+
+    //set spinner
+    get showSpinner(){
+        return this.isLoading || this.isSubmitting;
     }
 
     //boolean to display the add/edit fields button when we have an object selected
@@ -114,9 +123,6 @@ export default class FlowRecordFormCpe extends LightningElement {
         const inputParam = this.inputVariables.find(({name}) => name === 'recList');
         if(inputParam){
             return inputParam && inputParam.value;
-        }else{
-            const outputParam = this.automaticOutputVariables.find(({name}) => name === 'recList');
-            return outputParam && outputParam.value;
         }
     }
 
@@ -180,6 +186,7 @@ export default class FlowRecordFormCpe extends LightningElement {
                     theIndex: 0
                 }
             ];
+            this.fldsErrMsg = null;
             //send updated input property to parent lwc
             this._dispatchInputChanged('objName',newObj,'String');
 
@@ -239,31 +246,69 @@ export default class FlowRecordFormCpe extends LightningElement {
 
     //handle submitted updated fields and sending to the parent lwc
     handleSubmitFlds(event){
-        this.flds = this._flds;
-        const newValue = JSON.stringify(this.flds);
-        this._dispatchInputChanged('jsonFlds',newValue,'String');
-        this.toggleAddFld();
+        this.isSubmitting = true;
+        this.fldsErrMsg = null;
+        let errMsg;
+        //first validate inputs
+        let isValid = [...this.template.querySelectorAll('lightning-input,lightning-combobox')]
+                         .reduce((validSoFar, inputCmp) => {
+                             inputCmp.reportValidity();
+                             return validSoFar && inputCmp.checkValidity();
+                         }, true);
+
+        //make sure they didn't enter the same field twice
+        if(isValid){
+            let fldNames = [];
+            for(let theFld of this._flds){
+                if(fldNames.includes(theFld.apiName)){
+                    isValid = false;
+                    this.fldsErrMsg = 'You can\'t submit the same field twice','error';
+                    break;
+                }else{
+                    fldNames.push(theFld.apiName);
+                }
+            }
+        }else{
+            this.fldsErrMsg = 'One or more required field attributes are missing';
+        }
+
+        if(isValid){
+            this.isSubmitting = false;
+            this.fldsErrMsg = null;
+            this.flds = this._flds;
+            const newValue = JSON.stringify(this.flds);
+            this._dispatchInputChanged('jsonFlds',newValue,'String');
+            this.toggleAddFld();
+        }else{
+            this.isSubmitting = false;
+        }
     }
 
    //validation method, runs when Done is clicked in lwc config
     @api
     validate() {
-        //make sure there's at least one valid field and all fields are valid
+        this.noFldsErrMsg = false;
+        //check required fields and SObject fields
         const validity = [];
-        /*
-        copied from documentation
 
-        if (this.volume < 0 || this.volume > 100) {
-            volumeCmp.setCustomValidity('The slider range is between 0 and 100.');
+        const fldsValid = [...this.template.querySelectorAll('lightning-input,lightning-combobox')]
+                         .reduce((validSoFar, inputCmp) => {
+                             inputCmp.reportValidity();
+                             return validSoFar && inputCmp.checkValidity();
+                         }, true);
+
+        if(!fldsValid){
             validity.push({
-                key: 'Slider Range',
-                errorString: 'The slider range is between 0 and 100.',
-            });
-        } else {
-            volumeCmp.setCustomValidity('');
+                key: 'Missing Required Fields',
+                errorString: 'You are missing one or more required fields'
+            })
+        }else if(!(this.flds) || this.flds.length == 0 || !(this.flds[0].apiName)){
+            this.noFldsErrMsg = true;
+            validity.push({
+                key: 'Missing SObject Fields',
+                errorString: 'Add SObject Fields'
+            })
         }
-        volumeCmp.reportValidity();
-        */
         return validity;
     }
 

@@ -4,7 +4,7 @@
 
 <!-- Flow Record Form Cpe -->
 <template>
-    <div if:true={isLoading}>
+    <div if:true={showSpinner}>
         <lightning-spinner style="position: fixed;" alternative-text="Loading..."></lightning-spinner>
         <div style="position: fixed;" class="slds-backdrop slds-backdrop_open"></div>
     </div>
@@ -16,10 +16,11 @@
         >
             <lightning-combobox
                     name="inputType"
-                    label="Object Name"
+                    label="Object Name (changing will clear selected fields)"
                     value={objName}
                     placeholder="Select object..."
                     options={objOpts}
+                    required
                     onchange={handleObjChange}>
             </lightning-combobox>
         </lightning-layout-item>
@@ -44,7 +45,9 @@
                     label="Add/Edit Fields"
                     variant="brand"
                     onclick={toggleAddFld}
+                    class="slds-align_absolute-center"
             ></lightning-button>
+            <span class="slds-align_absolute-center errSpan" if:true={noFldsErrMsg}>You are required to select one or more fields</span>
         </lightning-layout-item>
     </lightning-layout>
 
@@ -60,6 +63,9 @@
             <!-- consider splitting this into its own LWC-->
             <div class="slds-modal__content" style="background-color:white;">
                 <lightning-layout multiple-rows>
+                    <lightning-layout-item size="12" if:true={fldsErrMsg}>
+                        <span class="slds-align_absolute-center errSpan">{fldsErrMsg}</span>
+                    </lightning-layout-item>
                     <lightning-layout-item size="3" padding="around-small">
                         Field
                     </lightning-layout-item>
@@ -82,6 +88,7 @@
                                     key={fld.apiName}
                                     data-index={fld.theIndex}
                                     name="apiName"
+                                    required
                                     onchange={handleFldChange}
                             ></lightning-combobox>
                         </lightning-layout-item>
@@ -94,6 +101,7 @@
                                     type="text"
                                     name="theLabel"
                                     data-index={fld.theIndex}
+                                    required
                                     onchange={handleFldChange}
                             ></lightning-input>
                         </lightning-layout-item>
@@ -119,6 +127,7 @@
                                     options={fldSizeOpts}
                                     onchange={handleFldChange}
                                     key={fld.apiName}
+                                    required
                                     data-index={fld.theIndex}>
                             </lightning-combobox>
                         </lightning-layout-item>
@@ -137,6 +146,7 @@
                                 label="Submit Fields"
                                 variant="brand"
                                 onclick={handleSubmitFlds}
+                                disabled={isSubmitting}
                         ></lightning-button>
                     </lightning-layout-item>
                 </lightning-layout>

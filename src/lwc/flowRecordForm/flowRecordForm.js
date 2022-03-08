@@ -3,6 +3,7 @@
  */
 
 import { LightningElement,api,track } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { FlowNavigationNextEvent } from 'lightning/flowSupport';
 
 export default class FlowRecordForm extends LightningElement {
@@ -10,6 +11,7 @@ export default class FlowRecordForm extends LightningElement {
     @api jsonFlds; //json of fields and attributes for the form passed from custom property editor
     @api recList; //the record collection passed into the lwc from flow
     @track _recList; //@api wasn't reactive on the form so using two arrays for now and copying the @track to the @api on final submission
+    @track isSubmitting = false; //track currently submitting
 
     //list of fields to display and attributes from the JSON
     get fldObjs(){
@@ -45,8 +47,9 @@ export default class FlowRecordForm extends LightningElement {
                 cloneRec.showRemove = !(theRec.Id); //boolean to show remove button
                 cloneRec.formLoaded = false; //boolean to set true when form is loaded
                 cloneRec.flds = []; //array of fields and values (values set to avoid using id in form to save load)
-                for(let theFldObj of this.fldObjs){ //set fields and values
+                for(let theFldObj of this.fldObjs){ //set fields, values and id for labels
                     theFldObj.value = theRec[theFldObj.apiName];
+                    theFldObj.theId = theCounter+theFldObj.apiName
                     cloneRec.flds.push(theFldObj);
                 }
                 theCounter++;
@@ -63,6 +66,7 @@ export default class FlowRecordForm extends LightningElement {
                 newRec.flds = [];
                 for(let theFldObj of this.fldObjs){
                     theFldObj.value = null;
+                    theFldObj.Id = newRec.theIndex+theFldObj.apiName;
                     newRec.flds.push(theFldObj);
                 }
                 this._recList.push(newRec);
@@ -96,17 +100,41 @@ export default class FlowRecordForm extends LightningElement {
         newRec.flds = [];
         for(let theFldObj of this.fldObjs){
             theFldObj.value = null;
+            theFldObj.theId = this._recList.length+theFldObj.apiName;
             newRec.flds.push(theFldObj);
         }
         this._recList.push(newRec);
     }
 
-    //assign _recList to recList and fire flow next
+    //validate fields, assign _recList to recList and fire flow next
     handleNext(event){
+        this.isSubmitting = true;
+        let isValid = true;
 
-        this.recList = this._recList;
+        for(let inputFld of this.template.querySelectorAll('lightning-input-field')){
+            isValid = isValid && inputFld.reportValidity();
+            inputFld.reportValidity();
+        }
 
-        const navigateNextEvent = new FlowNavigationNextEvent();
-        this.dispatchEvent(navigateNextEvent);
+        if(isValid){
+            this.recList = this._recList;
+
+            const navigateNextEvent = new FlowNavigationNextEvent();
+            this.dispatchEvent(navigateNextEvent);
+        }else{
+            this.isSubmitting = false;
+            this.showMsg('Error','One or more required fields are missing','error');
+        }
+    }
+
+    //function to show toast
+    showMsg(msgTitle,msgMsg,msgVar,msgMode){
+        const event = new ShowToastEvent({
+            title: msgTitle,
+            message: msgMsg,
+            variant: msgVar,
+            mode: msgMode
+        });
+        this.dispatchEvent(event);
     }
 }

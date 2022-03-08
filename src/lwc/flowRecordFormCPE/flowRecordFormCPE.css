@@ -1,3 +1,8 @@
 /**
  * Created by bswif on 3/7/2022.
  */
+
+ .errSpan{
+     font-weight: bold;
+     color: red
+ }
