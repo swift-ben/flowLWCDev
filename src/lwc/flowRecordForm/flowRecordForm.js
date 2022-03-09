@@ -47,7 +47,7 @@ export default class FlowRecordForm extends LightningElement {
                 cloneRec.showRemove = !(theRec.Id) && theCounter != 0; //boolean to show remove button for instantiated records only
                 cloneRec.removeId = theCounter.toString()+'Remove';//id for remove icon
                 cloneRec.formLoaded = false; //boolean to set true when form is loaded
-                cloneRec.flds = []; //array of fields and values (values set to avoid using id in form to save load)
+                cloneRec.flds = []; //array of fields and values (values set to avoid using id in form to speed up form load)
                 for(let theFldObj of this.fldObjs){ //set fields, values and id for labels
                     theFldObj.value = theRec[theFldObj.apiName];
                     theFldObj.theId = theCounter+theFldObj.apiName

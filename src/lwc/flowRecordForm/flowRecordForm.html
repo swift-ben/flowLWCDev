@@ -20,12 +20,10 @@
         <!-- record forms -->
         <lightning-layout-item size="12">
             <template for:each={_recList} for:item="rec">
-                <!--<lightning-record-edit-form object-api-name={objName} key={rec.theIndex} data-index={rec.theIndex} record-id={rec.Id}> removed record id reference to decrease load time -->
                 <lightning-record-edit-form object-api-name={objName} key={rec.theIndex} data-index={rec.theIndex} onload={handleFormLoad}>
                     <lightning-layout multiple-rows>
                         <template for:each={rec.flds} for:item="fld">
                             <lightning-layout-item size={fld.fldSize} key={fld.apiName} padding="around-small" >
-                                <!--<lightning-input-field value={fld.value} field-name={fld.apiName} key={fld.apiName} onchange={handleFieldUpdate} name={fld.apiName} data-index={rec.theIndex} required={fld.isRequired}></lightning-input-field>-->
                                 <label for={fld.theId}>{fld.theLabel}</label>
                                 <lightning-input-field id={fld.theId} variant="label-hidden" required={fld.isRequired} value={fld.value} field-name={fld.apiName} key={fld.apiName} onchange={handleFieldUpdate} name={fld.apiName} data-index={rec.theIndex} ></lightning-input-field>
                             </lightning-layout-item>

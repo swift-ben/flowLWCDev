@@ -6,7 +6,7 @@
 private class TEST_FlowRecordFormHelper {
 
     @IsTest
-    static void testGetObjects() {//basic test to pull object metadata
+    static void testGetObjects() {//test getting object metadata
         List<FlowRecordFormHelper.ObjectWrapper> theObjs = FlowRecordFormHelper.getObjects();
         System.assert(theObjs.size()>0);
 
@@ -18,12 +18,19 @@ private class TEST_FlowRecordFormHelper {
 
         //do a couple of assertions
         System.assert(objMap.containsKey('contact'));
-        FlowRecordFormHelper.ObjectWrapper conObj = objMap.get('contact');
+        System.assert(objMap.containsKey('account'));
+    }
+
+    @IsTest
+    static void testGetFields(){//test getting field metadata
+        List<FlowRecordFormHelper.FieldWrapper> theFlds = FlowRecordFormHelper.getFields('Contact');
         Set<String> objFieldNames = new Set<String>();
-        for(FlowRecordFormHelper.FieldWrapper theFld : conObj.objFlds){
+
+        for(FlowRecordFormHelper.FieldWrapper theFld : theFlds){
             objFieldNames.add(theFld.value.toLowerCase());
         }
 
+        //do a couple of assertions
         System.assert(objFieldNames.contains('firstname'));
         System.assert(objFieldNames.contains('lastname'));
         System.assert(objFieldNames.contains('accountid'));

@@ -12,10 +12,9 @@
 import { LightningElement, api, track, wire } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getObjects from '@salesforce/apex/FlowRecordFormHelper.getObjects';
+import getFields from '@salesforce/apex/FlowRecordFormHelper.getFields';
 
 export default class FlowRecordFormCpe extends LightningElement {
-    @track isLoading = true; //show spinner while loading
-    objFldMap; //map of sobjects to their fields
     @track objOpts; //list of sobjects
     @track fldOpts; //list of sobject fields
     @track showAddFlds; //boolean to show add/edit fields opener
@@ -48,6 +47,11 @@ export default class FlowRecordFormCpe extends LightningElement {
         this._automaticOutputVariables = value;
     }
 
+    //show spinner when options are loading
+    get isLoading(){
+        return (!(this.objOpts) || (this.objName && !(this.fldOpts)));
+    }
+
     //set spinner
     get showSpinner(){
         return this.isLoading || this.isSubmitting;
@@ -55,7 +59,7 @@ export default class FlowRecordFormCpe extends LightningElement {
 
     //boolean to display the add/edit fields button when we have an object selected
     get showAddFldsButton(){
-        return (this.objFldMap) && (this.objName);
+        return (this.fldOpts) && (this.objName);
     }
 
    //boolean to display reclists once object has been selected
@@ -108,7 +112,6 @@ export default class FlowRecordFormCpe extends LightningElement {
     //get the objName input variable
     get objName() {
         const param = this.inputVariables.find(({name}) => name === 'objName');
-        this.isLoading = false;
         return param && param.value;
     }
 
@@ -158,21 +161,26 @@ export default class FlowRecordFormCpe extends LightningElement {
     @wire(getObjects)
     wiredObjs({data,error}){
         if(data){
-            this.objOpts = [];
-            this.objFldMap = new Map();
-            for(let theObj of data){
-                this.objOpts.push(
-                        {
-                            value: theObj.value,
-                            label: theObj.label
-                        }
-                );
-                this.objFldMap.set(theObj.value,theObj.objFlds);
-            }
-            if(this.objName){
-                this.fldOpts = this.objFldMap.get(this.objName);
+            this.objOpts = data;
+
+            //if we don't need to load fields close spinner
+            if(!this.objName){
+                this.isSubmitting = false;
             }
         }else if(error){
+            console.log('error getting objects');
+            //todo handle this
+        }
+    }
+
+    //get object fields
+    @wire(getFields,{objName : '$objName'})
+    wiredFields({data,error}){
+        if(data){
+            this.fldOpts = data;
+            this.isSubmitting = false;
+        }else if(error){
+            console.log('error getting fields');
             //todo handle this
         }
     }
@@ -180,10 +188,10 @@ export default class FlowRecordFormCpe extends LightningElement {
     //handle changing the sobject, includes clearing fields, updating available fields and sending the new object name to the form lwc
     handleObjChange(event) {
         if (event && event.detail) {
+            this.isSubmitting = true;
             //set object name
             const newObj = event.detail.value;
-            //set field options
-            this.fldOpts = this.objFldMap.get(newObj);
+
             //set flds array
             this.flds = [
                 {
@@ -192,6 +200,7 @@ export default class FlowRecordFormCpe extends LightningElement {
                 }
             ];
             this.fldsErrMsg = null;
+
             //send updated input property to parent lwc
             this._dispatchInputChanged('objName',newObj,'String');
 

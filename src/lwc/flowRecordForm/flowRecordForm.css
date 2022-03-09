@@ -1,8 +1,11 @@
 /**
  * Created by bswif on 3/7/2022.
  */
+lightning-icon:hover{
+    cursor: pointer;
+}
 
- label{
-     opacity: .85;
-     font-size: .9em;
- }
+label{
+    opacity: .85;
+    font-size: .9em;
+}
