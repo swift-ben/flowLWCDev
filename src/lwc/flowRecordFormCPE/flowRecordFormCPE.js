@@ -17,10 +17,11 @@ import getFields from '@salesforce/apex/FlowRecordFormHelper.getFields';
 export default class FlowRecordFormCpe extends LightningElement {
     @track objOpts; //list of sobjects
     @track fldOpts; //list of sobject fields
+    fldLabelMap; //map of field names to labels to default label on field select
     @track showAddFlds; //boolean to show add/edit fields opener
     @track flds; //submitted fields from the add/edit fields modal
     @track _flds; //temp flds array to hold edits before submitting
-    @track fldSizeOpts = [] //list of input sizes
+    fldSizeOpts = [] //list of input sizes
     @track fldsErrMsg; //error to show on fields modal
     @track noFldsErrMsg; //error on submit if they didn't add fields
     @track isSubmitting = false; //show spinner on button submits;
@@ -70,6 +71,7 @@ export default class FlowRecordFormCpe extends LightningElement {
     //get record collections from flow
     get recLists(){
       let theRecLists = [];
+
       //check variables
        for(let theElmt of this.builderContext.variables){
             if(theElmt.dataType == 'SObject' && theElmt.isCollection){
@@ -82,6 +84,7 @@ export default class FlowRecordFormCpe extends LightningElement {
                 );
             }
        }
+
        //check record lookups
        for(let theElmt of this.builderContext.recordLookups){
                 theRecLists.push(
@@ -173,10 +176,16 @@ export default class FlowRecordFormCpe extends LightningElement {
         }
     }
 
-    //get object fields
+    //get object fields and field label map
     @wire(getFields,{objName : '$objName'})
     wiredFields({data,error}){
         if(data){
+            this.fldLabelMap = new Map();
+
+            for(let theOpt of data){
+                this.fldLabelMap.set(theOpt.value,theOpt.label);
+            }
+
             this.fldOpts = data;
             this.isSubmitting = false;
         }else if(error){
@@ -232,10 +241,11 @@ export default class FlowRecordFormCpe extends LightningElement {
     //method to show/hide fld modal
     toggleAddFld(event){
         this.showAddFlds = !this.showAddFlds;
-            if(this.showAddFlds){
-                this._flds = [];
-                for(let theFld of this.flds){
-                    this._flds.push(Object.assign({},theFld));
+        if(this.showAddFlds){
+            this._flds = [];
+
+            for(let theFld of this.flds){
+                this._flds.push(Object.assign({},theFld));
             }
         }
     }
@@ -256,18 +266,25 @@ export default class FlowRecordFormCpe extends LightningElement {
         if(event && event.detail){
             const theIndex = event.target.dataset.index;
             this._flds.splice(theIndex,1);
+
             for(let i = 0; i < this._flds.length; i++){
                 this._flds[i].theIndex = i;
-                this._flds[i].theIndex = i != 0;
+                this._flds[i].showRemove = i != 0;
             }
         }
     }
 
-    //handle a field being added or updated, set to json and send to parent lwc
+    //handle a field being added or updated
     handleFldChange(event) {
         if (event && event.detail) {
+            //set field attribute
             const theIndex = event.target.dataset.index;
             this._flds[theIndex][event.target.name] = event.target.value;
+
+            //if the apiName was updated, default the label
+            if(event.target.name == 'apiName'){
+                this._flds[theIndex].theLabel = this.fldLabelMap.get(event.target.value);
+            }
         }
     }
 
@@ -286,6 +303,7 @@ export default class FlowRecordFormCpe extends LightningElement {
         //make sure they didn't enter the same field twice
         if(isValid){
             let fldNames = [];
+
             for(let theFld of this._flds){
                 if(fldNames.includes(theFld.apiName)){
                     isValid = false;

@@ -24,6 +24,7 @@ export default class FlowRecordForm extends LightningElement {
     get formsLoaded(){
         let allLoaded = true;
         if(this._recList){
+
             for(let theRec of this._recList){
                 if(!theRec.formLoaded){
                     allLoaded = false;
@@ -41,6 +42,7 @@ export default class FlowRecordForm extends LightningElement {
         if((this.recList) && !(this._recList)){
             this._recList = [];
             let theCounter = 0;
+
             for(let theRec of this.recList){
                 let cloneRec = Object.assign({},theRec);
                 cloneRec.theIndex = theCounter; //index used for editing/removing
@@ -48,6 +50,7 @@ export default class FlowRecordForm extends LightningElement {
                 cloneRec.removeId = theCounter.toString()+'Remove';//id for remove icon
                 cloneRec.formLoaded = false; //boolean to set true when form is loaded
                 cloneRec.flds = []; //array of fields and values (values set to avoid using id in form to speed up form load)
+
                 for(let theFldObj of this.fldObjs){ //set fields, values and id for labels
                     theFldObj.value = theRec[theFldObj.apiName];
                     theFldObj.theId = theCounter+theFldObj.apiName
@@ -66,6 +69,7 @@ export default class FlowRecordForm extends LightningElement {
                         formLoaded: false
                 };
                 newRec.flds = [];
+
                 for(let theFldObj of this.fldObjs){
                     theFldObj.value = null;
                     theFldObj.Id = newRec.theIndex+theFldObj.apiName;
@@ -86,7 +90,8 @@ export default class FlowRecordForm extends LightningElement {
     handleFieldUpdate(event){
         let theIndex = event.target.dataset.index;
         this._recList[theIndex][event.target.name] = event.target.value;
-        //set the value on the corresponding item inf the flds array as well to maintain value on form
+
+        //set the value on the corresponding item in the flds array as well to maintain value on form
         for(let theFldObj of this._recList[theIndex].flds){
             theFldObj.value = this._recList[theIndex][theFldObj.apiName];
         }
@@ -101,6 +106,7 @@ export default class FlowRecordForm extends LightningElement {
             formLoaded: false
         };
         newRec.flds = [];
+
         for(let theFldObj of this.fldObjs){
             theFldObj.value = null;
             theFldObj.theId = this._recList.length+theFldObj.apiName;
@@ -113,6 +119,7 @@ export default class FlowRecordForm extends LightningElement {
     handleRemove(event){
         let theIndex = event.target.dataset.index;
         this._recList.splice(theIndex,1);
+
         for(let i = 0; i < this._recList.length; i++){
             this._recList[i].theIndex = i;
             this._recList[i].showRemove = !(this._recList[i].Id) && i != 0;
@@ -135,7 +142,6 @@ export default class FlowRecordForm extends LightningElement {
 
         if(isValid){
             this.recList = this._recList;
-
             const navigateNextEvent = new FlowNavigationNextEvent();
             this.dispatchEvent(navigateNextEvent);
         }else{

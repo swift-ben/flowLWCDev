@@ -20,6 +20,7 @@
         <!-- record forms -->
         <lightning-layout-item size="12">
             <template for:each={_recList} for:item="rec">
+                <hr key={rec.theIndex} />
                 <lightning-record-edit-form object-api-name={objName} key={rec.theIndex} data-index={rec.theIndex} onload={handleFormLoad}>
                     <lightning-layout multiple-rows>
                         <template for:each={rec.flds} for:item="fld">
