@@ -70,30 +70,32 @@ export default class FlowRecordFormCpe extends LightningElement {
 
     //get record collections from flow
     get recLists(){
-      let theRecLists = [];
+        let theRecLists = [];
 
-      //check variables
-       for(let theElmt of this.builderContext.variables){
+        //check variables
+        for(let theElmt of this.builderContext.variables){
             if(theElmt.dataType == 'SObject' && theElmt.isCollection){
                 theRecLists.push(
                     {
                         sObject: theElmt.objectType,
                         varName: theElmt.name,
-                        theVar: theElmt
+                        theVar: theElmt,
+                        theLabel: `${theElmt.objectType}s from ${theElmt.name}`
                     }
                 );
             }
-       }
+        }
 
-       //check record lookups
-       for(let theElmt of this.builderContext.recordLookups){
-                theRecLists.push(
-                    {
-                        sObject: theElmt.objectType,
-                        varName: theElmt.name,
-                        theVar: theElmt
-                    }
-                );
+        //check record lookups
+        for(let theElmt of this.builderContext.recordLookups){
+            theRecLists.push(
+                {
+                    sObject: theElmt.object,
+                    varName: theElmt.name,
+                    theVar: theElmt,
+                    theLabel: `${theElmt.object}s from ${theElmt.name}`
+                }
+            );
        }
        return theRecLists;
    }
@@ -102,12 +104,14 @@ export default class FlowRecordFormCpe extends LightningElement {
    get recListOpts(){
        let theOpts = [];
        for(let theList of this.recLists){
-           theOpts.push(
-               {
-                   label: theList.varName,
-                   value: theList.varName
-                }
-           );
+           if((this.objName) && theList.sObject == this.objName){
+               theOpts.push(
+                   {
+                       label: theList.theLabel,
+                       value: theList.varName
+                    }
+               );
+           }
        }
        return theOpts;
    }
@@ -212,6 +216,9 @@ export default class FlowRecordFormCpe extends LightningElement {
 
             //send updated input property to parent lwc
             this._dispatchInputChanged('objName',newObj,'String');
+
+            //clear recList if object is changed
+            this._dispatchInputChanged('recList',null,'reference');
 
             //send updated input type property to parent lwc
             const typeChangedEvent = new CustomEvent(
