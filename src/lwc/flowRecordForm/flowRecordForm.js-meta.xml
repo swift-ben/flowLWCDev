@@ -14,9 +14,9 @@
         <targetConfig targets="lightning__FlowScreen"
                       configurationEditor="c-flow-record-form-c-p-e">
             <propertyType name="theObj" extends="SObject" label="The Object" description="Generic sObject data type used for input sObject properties" />
-            <property label="The Records" name="recList" type="{theObj[]}" />
-            <property name="jsonFlds" type="String" />
-            <property name="objName" type="String" />
+            <property label="The Records" name="recList" type="{theObj[]}" description="Collection of Record(s) to pass from form(s)"/>
+            <property name="jsonFlds" type="String" role="inputOnly" />
+            <property name="objName" type="String" role="inputOnly" />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

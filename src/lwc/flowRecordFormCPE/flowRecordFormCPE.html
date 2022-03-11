@@ -21,6 +21,7 @@
                     label="Object Name (changing will clear selected fields)"
                     value={objName}
                     placeholder="Select object..."
+                    field-level-help="Select the SObject to display in the form(s)"
                     options={objOpts}
                     required
                     onchange={handleObjChange}>
@@ -33,6 +34,7 @@
                     value={recList}
                     if:true={showOpts}
                     options={recListOpts}
+                    field-level-help="Select a Record Collection variable or lookup from the Flow to choose Records to display in the form(s)"
                     onchange={handleRecListChange}
                     required
                     label="Record Collection">
@@ -72,19 +74,53 @@
                         <span class="slds-align_absolute-center errSpan">{fldsErrMsg}</span>
                     </lightning-layout-item>
                     <lightning-layout-item size="3" padding="around-small">
-                        Field
+                        <label>
+                            <span class="reqLabel">*</span>
+                            Field
+                            <div class="tooltip">
+                                <lightning-icon icon-name="utility:info" size="xx-small"  style="float:right;"></lightning-icon>
+                                <span class="tooltiptext">Select the SObject field display</span>
+                            </div>
+                        </label>
                     </lightning-layout-item>
                     <lightning-layout-item size="3" padding="around-small">
-                        Label
+                        <label>
+                            <span class="reqLabel">*</span>
+                            Label
+                            <div class="tooltip">
+                                <lightning-icon icon-name="utility:info" size="xx-small"  style="float:right;"></lightning-icon>
+                                <span class="tooltiptext">Optionally set a custom label for the field</span>
+                            </div>
+                        </label>
                     </lightning-layout-item>
                     <lightning-layout-item size="2" padding="around-small">
-                        Required
+                        <label>
+                            <span class="reqLabel">*</span>
+                            Required
+                            <div class="tooltip">
+                                <lightning-icon icon-name="utility:info" size="xx-small"  style="float:right;"></lightning-icon>
+                                <span class="tooltiptext">Require the field in the form</span>
+                            </div>
+                        </label>
                     </lightning-layout-item>
                     <lightning-layout-item size="2" padding="around-small">
-                        Input Size
+                        <label>
+                            <span class="reqLabel">*</span>
+                            Input Size
+                            <div class="tooltip">
+                                <lightning-icon icon-name="utility:info" size="xx-small"  style="float:right;"></lightning-icon>
+                                <span class="tooltiptext">Set the size of the field input out of a grid of 12 columns. Review lightning-layout-item documentation for more informaiton</span>
+                            </div>
+                        </label>
                     </lightning-layout-item>
                     <lightning-layout-item size="2" padding="around-small">
-                        Remove
+                        <label>
+                            Remove
+                            <div class="tooltip">
+                                <lightning-icon icon-name="utility:info" size="xx-small"  style="float:right;"></lightning-icon>
+                                <span class="tooltiptext">Remove this field</span>
+                            </div>
+                        </label>
                     </lightning-layout-item>
 
                     <!-- field list -->

@@ -286,7 +286,13 @@ export default class FlowRecordFormCpe extends LightningElement {
         if (event && event.detail) {
             //set field attribute
             const theIndex = event.target.dataset.index;
-            this._flds[theIndex][event.target.name] = event.target.value;
+
+            if(event.target.type == "checkbox"){
+                this._flds[theIndex][event.target.name] = event.target.checked;
+            }else{
+                this._flds[theIndex][event.target.name] = event.target.value;
+            }
+
 
             //if the apiName was updated, default the label
             if(event.target.name == 'apiName'){

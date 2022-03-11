@@ -524,7 +524,7 @@
             <inputParameters>
                 <name>jsonFlds</name>
                 <value>
-                    <stringValue>[{&quot;theIndex&quot;:0,&quot;apiName&quot;:&quot;Name&quot;,&quot;theLabel&quot;:&quot;Name&quot;,&quot;isRequired&quot;:&quot;&quot;,&quot;fldSize&quot;:&quot;4&quot;},{&quot;apiName&quot;:&quot;BillingStreet&quot;,&quot;theIndex&quot;:1,&quot;theLabel&quot;:&quot;Street&quot;,&quot;isRequired&quot;:&quot;&quot;,&quot;fldSize&quot;:&quot;4&quot;}]</stringValue>
+                    <stringValue>[{&quot;theIndex&quot;:0,&quot;apiName&quot;:&quot;Name&quot;,&quot;theLabel&quot;:&quot;Name&quot;,&quot;isRequired&quot;:true,&quot;fldSize&quot;:&quot;4&quot;,&quot;showRemove&quot;:false},{&quot;apiName&quot;:&quot;BillingStreet&quot;,&quot;theIndex&quot;:1,&quot;theLabel&quot;:&quot;Street&quot;,&quot;isRequired&quot;:false,&quot;fldSize&quot;:&quot;4&quot;,&quot;showRemove&quot;:true}]</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -571,7 +571,7 @@
             <inputParameters>
                 <name>jsonFlds</name>
                 <value>
-                    <stringValue>[{&quot;theIndex&quot;:0,&quot;apiName&quot;:&quot;FirstName&quot;,&quot;theLabel&quot;:&quot;First Name&quot;,&quot;isRequired&quot;:&quot;&quot;,&quot;fldSize&quot;:&quot;2&quot;},{&quot;apiName&quot;:&quot;LastName&quot;,&quot;theIndex&quot;:1,&quot;theLabel&quot;:&quot;Last Name&quot;,&quot;isRequired&quot;:&quot;&quot;,&quot;fldSize&quot;:&quot;2&quot;},{&quot;apiName&quot;:&quot;Email&quot;,&quot;theIndex&quot;:2,&quot;theLabel&quot;:&quot;Email&quot;,&quot;isRequired&quot;:&quot;&quot;,&quot;fldSize&quot;:&quot;2&quot;},{&quot;apiName&quot;:&quot;AccountId&quot;,&quot;theIndex&quot;:3,&quot;theLabel&quot;:&quot;Organization&quot;,&quot;isRequired&quot;:&quot;&quot;,&quot;fldSize&quot;:&quot;3&quot;}]</stringValue>
+                    <stringValue>[{&quot;theIndex&quot;:0,&quot;apiName&quot;:&quot;FirstName&quot;,&quot;theLabel&quot;:&quot;First Name&quot;,&quot;isRequired&quot;:true,&quot;fldSize&quot;:&quot;2&quot;,&quot;showRemove&quot;:false},{&quot;apiName&quot;:&quot;LastName&quot;,&quot;theIndex&quot;:1,&quot;theLabel&quot;:&quot;Last Name&quot;,&quot;isRequired&quot;:true,&quot;fldSize&quot;:&quot;2&quot;,&quot;showRemove&quot;:true},{&quot;apiName&quot;:&quot;Email&quot;,&quot;theIndex&quot;:2,&quot;theLabel&quot;:&quot;Email&quot;,&quot;isRequired&quot;:true,&quot;fldSize&quot;:&quot;2&quot;,&quot;showRemove&quot;:true},{&quot;apiName&quot;:&quot;AccountId&quot;,&quot;theIndex&quot;:3,&quot;theLabel&quot;:&quot;Organization&quot;,&quot;isRequired&quot;:true,&quot;fldSize&quot;:&quot;3&quot;,&quot;showRemove&quot;:true}]</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -610,15 +610,15 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>recList</name>
+                <name>jsonFlds</name>
                 <value>
-                    <elementReference>NewLeads</elementReference>
+                    <stringValue>[{&quot;theIndex&quot;:0,&quot;showRemove&quot;:false,&quot;apiName&quot;:&quot;FirstName&quot;,&quot;theLabel&quot;:&quot;First Name&quot;,&quot;fldSize&quot;:&quot;3&quot;,&quot;isRequired&quot;:true},{&quot;apiName&quot;:&quot;LastName&quot;,&quot;theIndex&quot;:1,&quot;showRemove&quot;:true,&quot;theLabel&quot;:&quot;Last Name&quot;,&quot;isRequired&quot;:true,&quot;fldSize&quot;:&quot;3&quot;},{&quot;apiName&quot;:&quot;Company&quot;,&quot;theIndex&quot;:2,&quot;showRemove&quot;:true,&quot;theLabel&quot;:&quot;Organization&quot;,&quot;isRequired&quot;:true,&quot;fldSize&quot;:&quot;3&quot;}]</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>jsonFlds</name>
+                <name>recList</name>
                 <value>
-                    <stringValue>[{&quot;theIndex&quot;:0,&quot;apiName&quot;:&quot;FirstName&quot;,&quot;theLabel&quot;:&quot;First Name&quot;,&quot;isRequired&quot;:&quot;&quot;,&quot;fldSize&quot;:&quot;3&quot;},{&quot;apiName&quot;:&quot;LastName&quot;,&quot;theIndex&quot;:1,&quot;theLabel&quot;:&quot;Last Name&quot;,&quot;isRequired&quot;:&quot;&quot;,&quot;fldSize&quot;:&quot;3&quot;},{&quot;apiName&quot;:&quot;Company&quot;,&quot;theIndex&quot;:2,&quot;theLabel&quot;:&quot;Company&quot;,&quot;isRequired&quot;:&quot;&quot;,&quot;fldSize&quot;:&quot;3&quot;}]</stringValue>
+                    <elementReference>NewLeads</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
