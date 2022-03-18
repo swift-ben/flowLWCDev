@@ -23,15 +23,10 @@
                 <hr key={rec.theIndex} />
                 <lightning-record-edit-form object-api-name={objName} key={rec.theIndex} data-index={rec.theIndex} onload={handleFormLoad}>
                     <lightning-layout multiple-rows>
-                        <template for:each={rec.flds} for:item="fld">
-                            <lightning-layout-item size={fld.fldSize} key={fld.apiName} padding="around-small" >
-                                <label for={fld.theId} ><span style="color:red;" if:true={fld.isRequired}>*</span>{fld.theLabel}</label>
-                                <lightning-input-field id={fld.theId} variant="label-hidden" required={fld.isRequired} value={fld.value} field-name={fld.apiName} key={fld.apiName} onchange={handleFieldUpdate} name={fld.apiName} data-index={rec.theIndex} ></lightning-input-field>
-                            </lightning-layout-item>
-                        </template>
-                        <lightning-layout-item size="1" if:true={rec.showRemove} padding="around-small">
+                        <lightning-layout-item size="1" padding="around-small">
                             <lightning-icon
                                     id={rec.removeId}
+                                    if:true={rec.showRemove}
                                     data-index={rec.theIndex}
                                     onclick={handleRemove}
                                     variant="error"
@@ -41,14 +36,21 @@
                                     style="padding-top:1em">
                             </lightning-icon>
                         </lightning-layout-item>
+                        <template for:each={rec.flds} for:item="fld">
+                            <lightning-layout-item size={fld.fldSize} key={fld.apiName} padding="around-small" >
+                                <label for={fld.theId} ><span style="color:red;" if:true={fld.isRequired}>*</span>{fld.theLabel}</label>
+                                <lightning-input-field id={fld.theId} variant="label-hidden" required={fld.isRequired} value={fld.value} field-name={fld.apiName} key={fld.apiName} onchange={handleFieldUpdate} name={fld.apiName} data-index={rec.theIndex} ></lightning-input-field>
+                            </lightning-layout-item>
+                        </template>
                     </lightning-layout>
                 </lightning-record-edit-form>
             </template>
         </lightning-layout-item>
 
         <!-- add form/submit buttons -->
-        <lightning-layout-item size="6" padding="around-small">
+        <lightning-layout-item size="6" padding="around-small" >
             <lightning-button
+                    if:false={hideAdd}
                     class="slds-float_right"
                     variant="brand"
                     onclick={handleAdd}

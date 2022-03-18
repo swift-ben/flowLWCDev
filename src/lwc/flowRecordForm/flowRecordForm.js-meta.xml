@@ -17,6 +17,7 @@
             <property label="The Records" name="recList" type="{theObj[]}" description="Collection of Record(s) to pass from form(s)"/>
             <property name="jsonFlds" type="String" role="inputOnly" />
             <property name="objName" type="String" role="inputOnly" />
+            <property name="hideAdd" type="Boolean" role="inputOnly" />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

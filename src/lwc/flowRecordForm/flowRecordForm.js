@@ -10,6 +10,7 @@ export default class FlowRecordForm extends LightningElement {
     @api objName; //sobject name for form passed from custom property editor
     @api jsonFlds; //json of fields and attributes for the form passed from custom property editor
     @api recList; //the record collection passed into the lwc from flow
+    @api hideAdd; //hide the add button on forms;
     @track _recList; //@api wasn't reactive on the form so using two arrays for now and copying the @track to the @api on final submission
     @track isSubmitting = false; //track currently submitting
 

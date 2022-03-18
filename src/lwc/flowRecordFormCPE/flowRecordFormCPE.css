@@ -10,6 +10,11 @@ lightning-icon:hover{
     color: red
 }
 
+.warnSpan{
+    font-weight: bold;
+    color: orange
+}
+
 label{
     font-weight: bold;
     font-size: .95em;

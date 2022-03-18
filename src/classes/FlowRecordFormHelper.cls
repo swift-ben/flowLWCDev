@@ -42,9 +42,9 @@ public with sharing class FlowRecordFormHelper {
 
     public class ObjectWrapper implements Comparable{
         @AuraEnabled
-        public String value {get;set;}
+        public String value;
         @AuraEnabled
-        public String label {get;set;}
+        public String label;
 
         ObjectWrapper(String value,String label){
             this.value = value;

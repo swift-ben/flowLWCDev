@@ -18,7 +18,7 @@
         >
             <lightning-combobox
                     name="inputType"
-                    label="Object Name (changing will clear selected fields)"
+                    label="Object Name (will clear fields)"
                     value={objName}
                     placeholder="Select object..."
                     field-level-help="Select the SObject to display in the form(s)"
@@ -39,6 +39,18 @@
                     required
                     label="Record Collection">
             </lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item
+                size="12"
+                padding="around-small">
+            <lightning-input
+                    type="checkbox"
+                    checked={hideAdd}
+                    if:true={showOpts}
+                    field-level-help="Check to restrict Users from adding additional records"
+                    onchange={handleHideAddChange}
+                    label="Hide Add Button">
+            </lightning-input>
         </lightning-layout-item>
         <lightning-layout-item
                 size="12"
@@ -70,8 +82,18 @@
             <!-- consider splitting this into its own LWC-->
             <div class="slds-modal__content" style="overflow:initial;">
                 <lightning-layout multiple-rows>
-                    <lightning-layout-item size="12" if:true={fldsErrMsg}>
-                        <span class="slds-align_absolute-center errSpan">{fldsErrMsg}</span>
+                    <lightning-layout-item size="12" if:true={showFldError}>
+                        <span class="slds-align_absolute-center errSpan" if:true={fldsErrMsg}>{fldsErrMsg}</span>
+                        <span class="slds-align_absolute-center warnSpan" if:true={fldsSizeErrMsg}>{fldsSizeErrMsg}</span>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                        <label>
+                            Remove
+                            <div class="tooltip">
+                                <lightning-icon icon-name="utility:info" size="xx-small"  style="float:right;"></lightning-icon>
+                                <span class="tooltiptext">Remove this field</span>
+                            </div>
+                        </label>
                     </lightning-layout-item>
                     <lightning-layout-item size="3" padding="around-small">
                         <label>
@@ -79,7 +101,7 @@
                             Field
                             <div class="tooltip">
                                 <lightning-icon icon-name="utility:info" size="xx-small"  style="float:right;"></lightning-icon>
-                                <span class="tooltiptext">Select the SObject field display</span>
+                                <span class="tooltiptext">Select the SObject field to display</span>
                             </div>
                         </label>
                     </lightning-layout-item>
@@ -95,7 +117,6 @@
                     </lightning-layout-item>
                     <lightning-layout-item size="2" padding="around-small">
                         <label>
-                            <span class="reqLabel">*</span>
                             Required
                             <div class="tooltip">
                                 <lightning-icon icon-name="utility:info" size="xx-small"  style="float:right;"></lightning-icon>
@@ -113,18 +134,20 @@
                             </div>
                         </label>
                     </lightning-layout-item>
-                    <lightning-layout-item size="2" padding="around-small">
-                        <label>
-                            Remove
-                            <div class="tooltip">
-                                <lightning-icon icon-name="utility:info" size="xx-small"  style="float:right;"></lightning-icon>
-                                <span class="tooltiptext">Remove this field</span>
-                            </div>
-                        </label>
-                    </lightning-layout-item>
 
                     <!-- field list -->
                     <template for:each={_flds} for:item="fld">
+                        <lightning-layout-item size="2" key={fld.apiName} padding="around-small" >
+                            <lightning-icon
+                                    if:true={fld.showRemove}
+                                    data-index={fld.theIndex}
+                                    onclick={handleRemoveFld}
+                                    variant="error"
+                                    icon-name="utility:delete"
+                                    alternative-text="Remove"
+                                    size="small" >
+                            </lightning-icon>
+                        </lightning-layout-item>
                         <lightning-layout-item size="3" key={fld.apiName} padding="around-small">
                             <lightning-combobox
                                     label="API Name"
@@ -176,16 +199,6 @@
                                     required
                                     data-index={fld.theIndex}>
                             </lightning-combobox>
-                        </lightning-layout-item>
-                        <lightning-layout-item size="2" key={fld.apiName} padding="around-small" if:true={fld.showRemove}>
-                            <lightning-icon
-                                    data-index={fld.theIndex}
-                                    onclick={handleRemoveFld}
-                                    variant="error"
-                                    icon-name="utility:delete"
-                                    alternative-text="Remove"
-                                    size="small" >
-                            </lightning-icon>
                         </lightning-layout-item>
                     </template>
 

@@ -17,12 +17,14 @@ import getFields from '@salesforce/apex/FlowRecordFormHelper.getFields';
 export default class FlowRecordFormCpe extends LightningElement {
     @track objOpts; //list of sobjects
     @track fldOpts; //list of sobject fields
-    fldLabelMap; //map of field names to labels to default label on field select
+    fldLabelMap = new Map(); //map of field names to labels to default label on field select
+    objLabelMap = new Map(); //map of object names to labels for collection labels
     @track showAddFlds; //boolean to show add/edit fields opener
     @track flds; //submitted fields from the add/edit fields modal
     @track _flds; //temp flds array to hold edits before submitting
     fldSizeOpts = [] //list of input sizes
     @track fldsErrMsg; //error to show on fields modal
+    @track fldsSizeErrMsg; //error to show on fields modal
     @track noFldsErrMsg; //error on submit if they didn't add fields
     @track isSubmitting = false; //show spinner on button submits;
 
@@ -58,14 +60,19 @@ export default class FlowRecordFormCpe extends LightningElement {
         return this.isLoading || this.isSubmitting;
     }
 
-    //boolean to display the add/edit fields button when we have an object selected
-    get showAddFldsButton(){
-        return (this.fldOpts) && (this.objName);
-    }
-
    //boolean to display reclists once object has been selected
     get showOpts(){
         return (this.objName);
+    }
+
+    //boolean to display the add/edit fields button when we have an object and collection selected
+    get showAddFldsButton(){
+        return (this.fldOpts) && (this.objName) && (this.recList);
+    }
+
+    //boolean to show error message on adding fields
+    get showFldError(){
+        return ((this.fldsErrMsg) || (this.fldsSizeErrMsg));
     }
 
     //get record collections from flow
@@ -80,7 +87,7 @@ export default class FlowRecordFormCpe extends LightningElement {
                         sObject: theElmt.objectType,
                         varName: theElmt.name,
                         theVar: theElmt,
-                        theLabel: `${theElmt.objectType}s from ${theElmt.name}`
+                        theLabel: `${this.objLabelMap.get(theElmt.objectType)}s from ${theElmt.name}`
                     }
                 );
             }
@@ -93,7 +100,7 @@ export default class FlowRecordFormCpe extends LightningElement {
                     sObject: theElmt.object,
                     varName: theElmt.name,
                     theVar: theElmt,
-                    theLabel: `${theElmt.object}s from ${theElmt.name}`
+                    theLabel: `${this.objLabelMap.get(theElmt.object)}s from ${theElmt.name}`
                 }
             );
        }
@@ -136,6 +143,14 @@ export default class FlowRecordFormCpe extends LightningElement {
         }
     }
 
+    //get the hideAdd input variable
+    get hideAdd(){
+        const inputParam = this.inputVariables.find(({name}) => name === 'hideAdd');
+        if(inputParam){
+            return inputParam && inputParam.value;
+        }
+    }
+
     //if we have jsonFlds already, assign them to the flds array, otherwise instantiate the flds array
     connectedCallback(){
         if(this.jsonFlds){
@@ -164,11 +179,15 @@ export default class FlowRecordFormCpe extends LightningElement {
         }
     }
 
-    //get all sobject and fields and popluate objectFldMap
+    //get all sobject and populate objectLabelMap
     @wire(getObjects)
     wiredObjs({data,error}){
         if(data){
             this.objOpts = data;
+
+            for(let theOpt of data){
+                this.objLabelMap.set(theOpt.value,theOpt.label);
+            }
 
             //if we don't need to load fields close spinner
             if(!this.objName){
@@ -184,7 +203,6 @@ export default class FlowRecordFormCpe extends LightningElement {
     @wire(getFields,{objName : '$objName'})
     wiredFields({data,error}){
         if(data){
-            this.fldLabelMap = new Map();
 
             for(let theOpt of data){
                 this.fldLabelMap.set(theOpt.value,theOpt.label);
@@ -245,9 +263,18 @@ export default class FlowRecordFormCpe extends LightningElement {
         }
     }
 
+    //handle changing the hideAdd input, includes sending update to parent lwc
+    handleHideAddChange(event) {
+        if (event && event.detail) {
+            const newValue = event.target.checked;
+            this._dispatchInputChanged('hideAdd',newValue,'Boolean');
+        }
+    }
+
     //method to show/hide fld modal
     toggleAddFld(event){
         this.showAddFlds = !this.showAddFlds;
+        this.fldsErrMsg = null;
         if(this.showAddFlds){
             this._flds = [];
 
@@ -293,6 +320,16 @@ export default class FlowRecordFormCpe extends LightningElement {
                 this._flds[theIndex][event.target.name] = event.target.value;
             }
 
+            //show size warning
+            let sizeCount = 0;
+            for(let theFld of this._flds){
+                sizeCount += parseInt(theFld.fldSize);
+            }
+            if(sizeCount > 11){
+                this.fldsSizeErrMsg = 'Your selected field size will result in the form displaying on multiple rows. Test and review before publishing.';
+            }else{
+                this.fldsSizeErrMsg = null;
+            }
 
             //if the apiName was updated, default the label
             if(event.target.name == 'apiName'){
