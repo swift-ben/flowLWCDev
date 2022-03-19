@@ -8,9 +8,9 @@ public with sharing class FlowRecordFormHelper {
 
     //return a list of sobjects
     @AuraEnabled(Cacheable=true)
-    public static List<ObjectWrapper> getObjects(){
+    public static List<ObjectWrapper> getObjects(List<String> objNames){
         List<ObjectWrapper> objList = new List<ObjectWrapper>();
-        for(String theName : Schema.getGlobalDescribe().keySet()) {
+        for(String theName : objNames) {
             Schema.SObjectType objType = Schema.getGlobalDescribe().get(theName);
             String name = objType.getDescribe().getName();
             String label = objType.getDescribe().getLabel();

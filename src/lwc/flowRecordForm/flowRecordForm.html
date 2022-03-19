@@ -17,6 +17,14 @@
     </div>
 
     <lightning-layout multiple-rows>
+        <!-- err msg -->
+        <lightning-layout-item
+                size="12"
+                padding="around-small"
+                if:true={showErr}
+        >
+            <lightning-formatted-rich-text value={genErrMsg}></lightning-formatted-rich-text>
+        </lightning-layout-item>
         <!-- record forms -->
         <lightning-layout-item size="12">
             <template for:each={_recList} for:item="rec">
@@ -33,7 +41,8 @@
                                     icon-name="utility:delete"
                                     alternative-text="Remove"
                                     size="small"
-                                    style="padding-top:1em">
+                                    style="padding-top:1em"
+                            >
                             </lightning-icon>
                         </lightning-layout-item>
                         <template for:each={rec.flds} for:item="fld">
@@ -48,23 +57,25 @@
         </lightning-layout-item>
 
         <!-- add form/submit buttons -->
-        <lightning-layout-item size="6" padding="around-small" >
+        <lightning-layout-item size="6" padding="around-small" if:false={showErr}>
             <lightning-button
                     if:false={hideAdd}
                     class="slds-float_right"
                     variant="brand"
                     onclick={handleAdd}
                     label="Add"
-                    disabled={isSubmitting}>
+                    disabled={isSubmitting}
+            >
             </lightning-button>
         </lightning-layout-item>
-        <lightning-layout-item size="6" padding="around-small">
+        <lightning-layout-item size="6" padding="around-small" if:false={showErr}>
             <lightning-button
                     class="slds-float_left"
                     variant="brand"
                     label="Next"
                     onclick={handleNext}
-                    disabled={isSubmitting}>
+                    disabled={isSubmitting}
+            >
             </lightning-button>
         </lightning-layout-item>
     </lightning-layout>

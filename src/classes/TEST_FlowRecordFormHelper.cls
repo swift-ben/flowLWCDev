@@ -7,8 +7,8 @@ private class TEST_FlowRecordFormHelper {
 
     @IsTest
     static void testGetObjects() {//test getting object metadata
-        List<FlowRecordFormHelper.ObjectWrapper> theObjs = FlowRecordFormHelper.getObjects();
-        System.assert(theObjs.size()>0);
+        List<FlowRecordFormHelper.ObjectWrapper> theObjs = FlowRecordFormHelper.getObjects(new List<String>{'Account','Contact'});
+        System.assertEquals(2,theObjs.size());
 
         Map<String,FlowRecordFormHelper.ObjectWrapper> objMap = new Map<String,FlowRecordFormHelper.ObjectWrapper>();
 
