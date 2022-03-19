@@ -849,6 +849,12 @@
                     <stringValue>[{&quot;theIndex&quot;:0,&quot;apiName&quot;:&quot;FirstName&quot;,&quot;theLabel&quot;:&quot;First Name&quot;,&quot;isRequired&quot;:true,&quot;fldSize&quot;:&quot;2&quot;,&quot;showRemove&quot;:false},{&quot;apiName&quot;:&quot;LastName&quot;,&quot;theIndex&quot;:1,&quot;theLabel&quot;:&quot;Last Name&quot;,&quot;isRequired&quot;:true,&quot;fldSize&quot;:&quot;2&quot;,&quot;showRemove&quot;:true},{&quot;apiName&quot;:&quot;Email&quot;,&quot;theIndex&quot;:2,&quot;theLabel&quot;:&quot;Email&quot;,&quot;isRequired&quot;:true,&quot;fldSize&quot;:&quot;2&quot;,&quot;showRemove&quot;:true},{&quot;apiName&quot;:&quot;AccountId&quot;,&quot;theIndex&quot;:3,&quot;theLabel&quot;:&quot;Organization&quot;,&quot;isRequired&quot;:true,&quot;fldSize&quot;:&quot;3&quot;,&quot;showRemove&quot;:true}]</stringValue>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>allowDel</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
@@ -917,7 +923,7 @@
             <targetReference>Get_Accounts</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
         <name>ContactTableHeaderTemplate</name>
         <isViewedAsPlainText>false</isViewedAsPlainText>
