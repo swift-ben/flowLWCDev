@@ -55,6 +55,21 @@
                 padding="around-small"
                 if:false={showErr}
         >
+            <lightning-input
+                    type="checkbox"
+                    checked={allowDel}
+                    if:true={recList}
+                    field-level-help="Check to allow Users to mark existing Records for deletion (you'll still need to delete them in the Flow)"
+                    onchange={handleAllowDelChange}
+                    label="Allow Delete"
+            >
+            </lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item
+                size="12"
+                padding="around-small"
+                if:false={showErr}
+        >
             <!-- button to open add/edit fields modal -->
             <lightning-button
                     if:true={showAddFldsButton}

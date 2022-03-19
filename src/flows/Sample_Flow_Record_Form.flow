@@ -4,7 +4,7 @@
     <assignments>
         <name>Add_Acc_to_Insert_List</name>
         <label>Add Acc to Insert List</label>
-        <locationX>402</locationX>
+        <locationX>534</locationX>
         <locationY>1118</locationY>
         <assignmentItems>
             <assignToReference>AccountsToInsert</assignToReference>
@@ -20,7 +20,7 @@
     <assignments>
         <name>Add_Acc_to_Update_List</name>
         <label>Add Acc to Update List</label>
-        <locationX>138</locationX>
+        <locationX>270</locationX>
         <locationY>1118</locationY>
         <assignmentItems>
             <assignToReference>AccountsToUpdate</assignToReference>
@@ -36,7 +36,7 @@
     <assignments>
         <name>Add_Con_to_Insert_List</name>
         <label>Add Con to Insert List</label>
-        <locationX>1018</locationX>
+        <locationX>1194</locationX>
         <locationY>1118</locationY>
         <assignmentItems>
             <assignToReference>ContactsToInsert</assignToReference>
@@ -52,10 +52,10 @@
     <assignments>
         <name>Add_Con_to_Update_List</name>
         <label>Add Con to Update List</label>
-        <locationX>754</locationX>
+        <locationX>930</locationX>
         <locationY>1118</locationY>
         <assignmentItems>
-            <assignToReference>ContactToUpdate</assignToReference>
+            <assignToReference>ContactsToUpdate</assignToReference>
             <operator>Add</operator>
             <value>
                 <elementReference>Loop_Contacts</elementReference>
@@ -68,7 +68,7 @@
     <assignments>
         <name>New_Account_Table_Row</name>
         <label>New Account Table Row</label>
-        <locationX>270</locationX>
+        <locationX>402</locationX>
         <locationY>878</locationY>
         <assignmentItems>
             <assignToReference>AccountTableHTML</assignToReference>
@@ -84,7 +84,7 @@
     <assignments>
         <name>New_Contact_HTML_Row</name>
         <label>New Contact HTML Row</label>
-        <locationX>886</locationX>
+        <locationX>1062</locationX>
         <locationY>878</locationY>
         <assignmentItems>
             <assignToReference>ContactTableHTML</assignToReference>
@@ -100,7 +100,7 @@
     <assignments>
         <name>New_Lead_HTML_Row</name>
         <label>New Lead HTML Row</label>
-        <locationX>1106</locationX>
+        <locationX>1370</locationX>
         <locationY>878</locationY>
         <assignmentItems>
             <assignToReference>LeadTableHTML</assignToReference>
@@ -111,6 +111,96 @@
         </assignmentItems>
         <connector>
             <targetReference>Loop_Leads</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Account_Counts</name>
+        <label>Set Account Counts</label>
+        <locationX>182</locationX>
+        <locationY>1550</locationY>
+        <assignmentItems>
+            <assignToReference>AccountsInsertCount</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>AccountsToInsert</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>AccountsUpdateCount</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>AccountsToUpdate</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Check_Account_Insert</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Contact_Counts</name>
+        <label>Set Contact Counts</label>
+        <locationX>842</locationX>
+        <locationY>1550</locationY>
+        <assignmentItems>
+            <assignToReference>ContactsInsertCount</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>ContactsToInsert</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ContactsUpdateCount</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>ContactsToUpdate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ContactsDeleteCount</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>ContactsToDelete</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Check_Contact_Insert</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Lead_Counts</name>
+        <label>Set Lead Counts</label>
+        <locationX>1282</locationX>
+        <locationY>1214</locationY>
+        <assignmentItems>
+            <assignToReference>ContactsInsertCount</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>ContactsToInsert</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ContactsUpdateCount</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>ContactsToUpdate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ContactsDeleteCount</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>ContactsToDelete</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>LeadsInsertCount</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>NewLeads</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Check_Lead_Insert</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -161,7 +251,7 @@
     <decisions>
         <name>Check_Acc_Id</name>
         <label>Check Acc Id</label>
-        <locationX>270</locationX>
+        <locationX>402</locationX>
         <locationY>998</locationY>
         <defaultConnector>
             <targetReference>Add_Acc_to_Insert_List</targetReference>
@@ -184,9 +274,59 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Check_Account_Insert</name>
+        <label>Check Account Insert</label>
+        <locationX>182</locationX>
+        <locationY>1670</locationY>
+        <defaultConnector>
+            <targetReference>Check_Account_Update</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Run_Account_Insert</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>AccountsInsertCount</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Insert_Accounts</targetReference>
+            </connector>
+            <label>Run Account Insert</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Account_Update</name>
+        <label>Check Account Update</label>
+        <locationX>182</locationX>
+        <locationY>2006</locationY>
+        <defaultConnector>
+            <targetReference>Success</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Run_Account_Update</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>AccountsUpdateCount</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Accounts</targetReference>
+            </connector>
+            <label>Run Account Update</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Check_Con_Id</name>
         <label>Check Con Id</label>
-        <locationX>886</locationX>
+        <locationX>1062</locationX>
         <locationY>998</locationY>
         <defaultConnector>
             <targetReference>Add_Con_to_Insert_List</targetReference>
@@ -209,9 +349,109 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Check_Contact_Delete</name>
+        <label>Check Contact Delete</label>
+        <locationX>842</locationX>
+        <locationY>2342</locationY>
+        <defaultConnector>
+            <targetReference>Success</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Run_Contact_Delete</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ContactsDeleteCount</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Delete_Contacts</targetReference>
+            </connector>
+            <label>Run Contact Delete</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Contact_Insert</name>
+        <label>Check Contact Insert</label>
+        <locationX>842</locationX>
+        <locationY>1670</locationY>
+        <defaultConnector>
+            <targetReference>Check_Contact_Update</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Run_Contact_Insert</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ContactsInsertCount</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Insert_Contacts</targetReference>
+            </connector>
+            <label>Run Contact Insert</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Contact_Update</name>
+        <label>Check Contact Update</label>
+        <locationX>842</locationX>
+        <locationY>2006</locationY>
+        <defaultConnector>
+            <targetReference>Check_Contact_Delete</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Run_Contact_Update</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ContactsUpdateCount</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Contacts</targetReference>
+            </connector>
+            <label>Run Contact Update</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Lead_Insert</name>
+        <label>Check Lead Insert</label>
+        <locationX>1282</locationX>
+        <locationY>1334</locationY>
+        <defaultConnector>
+            <targetReference>Success</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Run_Lead_Insert</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LeadsInsertCount</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Insert_Leads</targetReference>
+            </connector>
+            <label>Run Lead Insert</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Select_Loop</name>
         <label>Select Loop</label>
-        <locationX>534</locationX>
+        <locationX>732</locationX>
         <locationY>518</locationY>
         <defaultConnector>
             <targetReference>The_Leads_Component</targetReference>
@@ -283,7 +523,7 @@
     <loops>
         <name>Loop_Accounts</name>
         <label>Loop Accounts</label>
-        <locationX>50</locationX>
+        <locationX>182</locationX>
         <locationY>758</locationY>
         <collectionReference>Get_Accounts</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -297,7 +537,7 @@
     <loops>
         <name>Loop_Contacts</name>
         <label>Loop Contacts</label>
-        <locationX>666</locationX>
+        <locationX>842</locationX>
         <locationY>758</locationY>
         <collectionReference>Get_Contacts</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -311,7 +551,7 @@
     <loops>
         <name>Loop_Leads</name>
         <label>Loop Leads</label>
-        <locationX>1018</locationX>
+        <locationX>1282</locationX>
         <locationY>758</locationY>
         <collectionReference>NewLeads</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -345,33 +585,46 @@
         <name>Insert_Accounts</name>
         <label>Insert Accounts</label>
         <locationX>50</locationX>
-        <locationY>1550</locationY>
+        <locationY>1790</locationY>
         <connector>
-            <targetReference>Update_Accounts</targetReference>
+            <targetReference>Check_Account_Update</targetReference>
         </connector>
         <inputReference>AccountsToInsert</inputReference>
     </recordCreates>
     <recordCreates>
         <name>Insert_Contacts</name>
         <label>Insert Contacts</label>
-        <locationX>666</locationX>
-        <locationY>1550</locationY>
+        <locationX>710</locationX>
+        <locationY>1790</locationY>
         <connector>
-            <targetReference>Update_Contacts</targetReference>
+            <targetReference>Check_Contact_Update</targetReference>
         </connector>
         <inputReference>ContactsToInsert</inputReference>
     </recordCreates>
     <recordCreates>
         <name>Insert_Leads</name>
         <label>Insert Leads</label>
-        <locationX>1018</locationX>
-        <locationY>1214</locationY>
+        <locationX>1150</locationX>
+        <locationY>1454</locationY>
+        <connector>
+            <targetReference>Success</targetReference>
+        </connector>
         <inputReference>NewLeads</inputReference>
     </recordCreates>
+    <recordDeletes>
+        <name>Delete_Contacts</name>
+        <label>Delete Contacts</label>
+        <locationX>710</locationX>
+        <locationY>2462</locationY>
+        <connector>
+            <targetReference>Success</targetReference>
+        </connector>
+        <inputReference>ContactsToDelete</inputReference>
+    </recordDeletes>
     <recordLookups>
         <name>Get_Accounts</name>
         <label>Get Accounts</label>
-        <locationX>534</locationX>
+        <locationX>732</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -384,7 +637,7 @@
     <recordLookups>
         <name>Get_Contacts</name>
         <label>Get Contacts</label>
-        <locationX>534</locationX>
+        <locationX>732</locationX>
         <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -398,27 +651,33 @@
         <name>Update_Accounts</name>
         <label>Update Accounts</label>
         <locationX>50</locationX>
-        <locationY>1670</locationY>
+        <locationY>2126</locationY>
+        <connector>
+            <targetReference>Success</targetReference>
+        </connector>
         <inputReference>AccountsToUpdate</inputReference>
     </recordUpdates>
     <recordUpdates>
         <name>Update_Contacts</name>
         <label>Update Contacts</label>
-        <locationX>666</locationX>
-        <locationY>1670</locationY>
-        <inputReference>ContactToUpdate</inputReference>
+        <locationX>710</locationX>
+        <locationY>2126</locationY>
+        <connector>
+            <targetReference>Check_Contact_Delete</targetReference>
+        </connector>
+        <inputReference>ContactsToUpdate</inputReference>
     </recordUpdates>
     <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
         <name>Display_Account</name>
         <label>Display Account</label>
-        <locationX>50</locationX>
+        <locationX>182</locationX>
         <locationY>1430</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Insert_Accounts</targetReference>
+            <targetReference>Set_Account_Counts</targetReference>
         </connector>
         <fields>
             <name>AccountsDisplay</name>
@@ -431,13 +690,13 @@
     <screens>
         <name>Display_Contact</name>
         <label>Display Contact</label>
-        <locationX>666</locationX>
+        <locationX>842</locationX>
         <locationY>1430</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Insert_Contacts</targetReference>
+            <targetReference>Set_Contact_Counts</targetReference>
         </connector>
         <fields>
             <name>ContactsDisplay</name>
@@ -450,13 +709,13 @@
     <screens>
         <name>Display_Lead</name>
         <label>Display Lead</label>
-        <locationX>1018</locationX>
+        <locationX>1282</locationX>
         <locationY>1094</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Insert_Leads</targetReference>
+            <targetReference>Set_Lead_Counts</targetReference>
         </connector>
         <fields>
             <name>ContactsDisplay_0</name>
@@ -469,7 +728,7 @@
     <screens>
         <name>Select_Data</name>
         <label>Select Data</label>
-        <locationX>534</locationX>
+        <locationX>732</locationX>
         <locationY>398</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -491,9 +750,25 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>Success</name>
+        <label>Success</label>
+        <locationX>732</locationX>
+        <locationY>2774</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>SuccessMsg</name>
+            <fieldText>&lt;p&gt;Success! &lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Go review your new/updated/deleted Records.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>The_Accounts_Component</name>
         <label>The Accounts Component</label>
-        <locationX>50</locationX>
+        <locationX>182</locationX>
         <locationY>638</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -540,7 +815,7 @@
     <screens>
         <name>The_Contacts_Component</name>
         <label>The Contacts Component</label>
-        <locationX>666</locationX>
+        <locationX>842</locationX>
         <locationY>638</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -580,6 +855,10 @@
                 <assignToReference>Get_Contacts</assignToReference>
                 <name>recList</name>
             </outputParameters>
+            <outputParameters>
+                <assignToReference>ContactsToDelete</assignToReference>
+                <name>delRecList</name>
+            </outputParameters>
         </fields>
         <showFooter>false</showFooter>
         <showHeader>true</showHeader>
@@ -587,7 +866,7 @@
     <screens>
         <name>The_Leads_Component</name>
         <label>The Leads Component</label>
-        <locationX>1018</locationX>
+        <locationX>1282</locationX>
         <locationY>638</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -632,7 +911,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>408</locationX>
+        <locationX>606</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Accounts</targetReference>
@@ -644,6 +923,14 @@
         <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>&lt;p&gt;&amp;lt;table style=&quot;margin-left:auto;margin-right:auto;width:100%;&quot;&amp;gt;&amp;lt;tr&amp;gt;&amp;lt;th style=&quot;border:1px solid;&quot;&amp;gt;Id&amp;lt;/th&amp;gt;&amp;lt;th style=&quot;border:1px solid;&quot;&amp;gt;First Name&amp;lt;/th&amp;gt;&amp;lt;th style=&quot;border:1px solid;&quot;&amp;gt;Last Name&amp;lt;/th&amp;gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;&amp;lt;th style=&quot;border:1px solid;&quot;&amp;gt;Email&amp;lt;/th&amp;gt;&lt;/span&gt;&amp;lt;th style=&quot;border:1px solid;&quot;&amp;gt;AccountId&amp;lt;/th&amp;gt;&amp;lt;/tr&amp;gt;&lt;/p&gt;</text>
     </textTemplates>
+    <variables>
+        <name>AccountsInsertCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
     <variables>
         <name>AccountsToInsert</name>
         <dataType>SObject</dataType>
@@ -661,6 +948,14 @@
         <objectType>Account</objectType>
     </variables>
     <variables>
+        <name>AccountsUpdateCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
         <name>AccountTableHTML</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -671,12 +966,52 @@
         </value>
     </variables>
     <variables>
+        <name>ContactsDeleteCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>ContactsInsertCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>ContactsToDelete</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Contact</objectType>
+    </variables>
+    <variables>
         <name>ContactsToInsert</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Contact</objectType>
+    </variables>
+    <variables>
+        <name>ContactsToUpdate</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Contact</objectType>
+    </variables>
+    <variables>
+        <name>ContactsUpdateCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
     </variables>
     <variables>
         <name>ContactTableHTML</name>
@@ -689,12 +1024,12 @@
         </value>
     </variables>
     <variables>
-        <name>ContactToUpdate</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
+        <name>LeadsInsertCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-        <objectType>Contact</objectType>
+        <scale>0</scale>
     </variables>
     <variables>
         <name>LeadTableHTML</name>

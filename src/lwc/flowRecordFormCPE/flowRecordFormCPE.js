@@ -95,6 +95,14 @@ export default class FlowRecordFormCpe extends LightningElement {
         }
     }
 
+    //get the allowDel input variable
+    get allowDel(){
+        const inputParam = this.inputVariables.find(({name}) => name === 'allowDel');
+        if(inputParam){
+            return inputParam && inputParam.value;
+        }
+    }
+
     //run on load
     connectedCallback(){
         try{
@@ -284,6 +292,18 @@ export default class FlowRecordFormCpe extends LightningElement {
             }
         }catch(error){
             this.logErr(error,'error on handleHideAddChange');
+        }
+    }
+
+    //handle changing the allowDel input, includes sending update to parent lwc
+    handleAllowDelChange(event) {
+        try{
+            if (event && event.detail) {
+                const newValue = event.target.checked;
+                this._dispatchInputChanged('allowDel',newValue,'Boolean');
+            }
+        }catch(error){
+            this.logErr(error,'error on handleAllowDelChange');
         }
     }
 

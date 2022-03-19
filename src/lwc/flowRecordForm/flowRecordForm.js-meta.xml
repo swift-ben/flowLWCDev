@@ -15,6 +15,8 @@
                       configurationEditor="c-flow-record-form-c-p-e">
             <propertyType name="theObj" extends="SObject" label="The Object" description="Generic sObject data type used for input sObject properties" />
             <property label="The Records" name="recList" type="{theObj[]}" description="Collection of Record(s) to pass from form(s)"/>
+            <property label="Allow Delete" name="allowDel" type="Boolean" description="Allow users to select Records to delete (you'll need to delete them in the Flow)" role="inputOnly"/>
+            <property label="Records to Delete" name="delRecList" type="{theObj[]}" description="Collection of Record(s) to delete (you need to check Add Delete and delete these in the Flow)" role="outputOnly"/>
             <property name="jsonFlds" type="String" role="inputOnly" />
             <property name="objName" type="String" role="inputOnly" />
             <property name="hideAdd" type="Boolean" role="inputOnly" />
