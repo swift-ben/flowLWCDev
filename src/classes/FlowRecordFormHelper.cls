@@ -14,13 +14,7 @@ public with sharing class FlowRecordFormHelper {
             Schema.SObjectType objType = Schema.getGlobalDescribe().get(theName);
             String name = objType.getDescribe().getName();
             String label = objType.getDescribe().getLabel();
-            if (!name.containsIgnoreCase('history') && !name.containsIgnoreCase('tag') &&
-                    !name.containsIgnoreCase('share') && !name.containsIgnoreCase('feed') &&
-                    !name.containsIgnoreCase('group') && !name.containsIgnoreCase('public') &&
-                    !objType.getDescribe().isCustomSetting() && objType.getDescribe().isCreateable() &&
-                    objType.getDescribe().getRecordTypeInfos().size() > 0) {
-                objList.add(new ObjectWrapper(name,label));
-            }
+            objList.add(new ObjectWrapper(name,label));
         }
         objList.sort();
         return objList;
